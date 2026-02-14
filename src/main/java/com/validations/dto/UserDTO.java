@@ -3,6 +3,8 @@ package com.validations.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class UserDTO {
     @NotBlank(message = "Username is Required")
@@ -17,4 +19,8 @@ public class UserDTO {
     @Min(value = 18, message = "Age must be at least 18")
     @Max(value = 100, message = "Age must be less than 100")
     private Integer age;
+
+    @NotNull(message = "Date of Birth is required")
+    @Past(message = "Date of Birth cannot be in the future")
+    private LocalDate dateOfBirth;
 }
