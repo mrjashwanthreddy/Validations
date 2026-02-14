@@ -37,8 +37,18 @@ public class GlobalExceptionHandler {
 
         // Loop through all the validation errors and extract the field name + message
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
+            String fieldName;
             String errorMessage = error.getDefaultMessage();
+
+            // 1. SAFELY determine the field name
+            if (error instanceof FieldError) {
+                // It's a field-level error (e.g., @Email)
+                fieldName = ((FieldError) error).getField();
+            } else {
+                // It's a class-level error (e.g., @ValidMaritalStatus)
+                fieldName = error.getObjectName();
+            }
+
             errorResponse.put(fieldName, errorMessage);
         });
 

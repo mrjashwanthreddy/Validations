@@ -1,11 +1,13 @@
 package com.validations.dto;
 
+import com.validations.annotation.ValidMaritalStatus;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@ValidMaritalStatus // <--- Applying the custom validation here!
 public class UserDTO {
     @NotBlank(message = "Username is Required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters.")
@@ -23,6 +25,9 @@ public class UserDTO {
     @NotNull(message = "Date of Birth is required")
     @Past(message = "Date of Birth cannot be in the future")
     private LocalDate dateOfBirth;
+
+    private Boolean married;
+    private String partnerName;
 
     // --- TRANSFORMATION LOGIC ---
 
