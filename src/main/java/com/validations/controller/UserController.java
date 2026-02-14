@@ -22,6 +22,7 @@ public class UserController {
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) {
         // The @Valid check happens BEFORE this line.
         // If we get here, syntax is good. Now check business logic.
+        System.out.println("Registering User: " + userDTO.toString());
 
         userService.registerUser(userDTO); // This might throw IllegalArgumentException
 

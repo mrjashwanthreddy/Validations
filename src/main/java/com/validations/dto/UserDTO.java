@@ -23,4 +23,20 @@ public class UserDTO {
     @NotNull(message = "Date of Birth is required")
     @Past(message = "Date of Birth cannot be in the future")
     private LocalDate dateOfBirth;
+
+    // --- TRANSFORMATION LOGIC ---
+
+    // 1. Trim whitespace from Username
+    public void setUsername(String username) {
+        if (username != null) {
+            this.username = username.trim();
+        }
+    }
+
+    // 2. Normalize Email to Lowercase & Trim
+    public void setEmail(String email) {
+        if (email != null) {
+            this.email = email.trim().toLowerCase();
+        }
+    }
 }
