@@ -3,6 +3,8 @@ package com.validations.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,6 +25,22 @@ public class GlobalExceptionHandler {
 
         // In a real app, you could parse 'ex.getMessage()' to find the exact field name,
         // but for now, let's keep it simple and safe.
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // 2. Handle Validation Errors (Syntactic Validation Failures)
+    // This triggers when @Valid fails on your DTO
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+
+        // Loop through all the validation errors and extract the field name + message
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errorResponse.put(fieldName, errorMessage);
+        });
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
